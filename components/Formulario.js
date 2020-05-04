@@ -1,15 +1,14 @@
 import React, {useState,useEffect} from "react"
 import * as Font from "expo-font"
 //import {Picker} from "@react-native-community/picker"
-import {Text, View, StyleSheet,Picker } from "react-native"
+import {Text, View, StyleSheet,Picker, TouchableHighlight,Alert } from "react-native"
 import axios from "axios"
 
-const Formulario =()=>{
+const Formulario =({moneda,criptomoneda,guardarMoneda,guardarCriptomoneda,guardarConsultarApi})=>{
    
     const [fontsLoaded, setFontsLoaded] = useState(false)
-    const [moneda, guardarMoneda] = useState("");
-    const [criptomoneda, guardarCriptomoneda] = useState("");
-    const [criptomonedas, guardarCriptomonedas] = useState("");
+    
+    const [criptomonedas, guardarCriptomonedas] = useState([]);
 
     useEffect(()=>{
         const consularAPI = async () =>{
@@ -40,12 +39,33 @@ const Formulario =()=>{
             <Text>No salio esta vaina</Text>
         </View>)
     }
-    // almacena las selcciones del usuario
+    // Almacena las selcciones del usuario
     const obtenerMoneda =(moneda)=>{
         guardarMoneda(moneda)
     }
+    
     const obtenerCriptomoneda =(moneda)=>{
         guardarCriptomoneda(moneda)
+    }
+
+    const cotizarPrecio =()=>{
+        if(moneda.trim() === "" || criptomoneda.trim() === ""){
+            mostrarAlerta();
+            return 
+        }
+        // se pasa la validacion, cambiar el state de consultarApi
+
+        guardarConsultarApi(true)
+    }
+
+    const mostrarAlerta=() =>{
+        Alert.alert(
+            "Error...",
+            "Ambos campos son obligatorios",
+            [
+                {text : "OK"}
+            ]
+        )
     }
 
                     return (
@@ -79,6 +99,9 @@ const Formulario =()=>{
                                     
 
                             </Picker>
+                            <TouchableHighlight style={styles.btnCotizar} onPress={()=> cotizarPrecio()}>
+                                <Text style={styles.textoCotizar}>Cotizar</Text>
+                            </TouchableHighlight>
                         </View>
                     )
 }
@@ -90,6 +113,19 @@ const styles = StyleSheet.create({
 
         fontSize:22,
         marginVertical :20
+    },
+    btnCotizar:{
+        backgroundColor :"#5E49E2",
+        padding:10,
+        marginTop:20
+    },
+    textoCotizar:{
+        color:"#FFF",
+        fontSize:18,
+        textAlign:"center",
+        fontFamily : "lato-black",
+
+
     }
 })
 

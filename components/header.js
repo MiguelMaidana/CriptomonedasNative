@@ -34,7 +34,7 @@ const Header =()=>{
 
 const styles = StyleSheet.create({
     encabezado:{
-        paddingTop : Platform.OS ==="ios" ? 50 :10,
+        paddingTop : Platform.OS ==="ios" ? 40 :10,
         fontFamily : "lato-black",
         backgroundColor : "#5E49E2",
         paddingBottom :10,
